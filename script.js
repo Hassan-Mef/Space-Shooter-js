@@ -1,4 +1,4 @@
-var canvas = document.getElementById("canvas");
+var canvjas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 // Initialize the square's position
@@ -13,13 +13,22 @@ function drawSquare() {
     ctx.fillRect(square.x, square.y, square.size, square.size);
 }
 
+var speed =10;
 function moveDown() {
-    square.y += 10;
-    if(square.y >= canvas.height) square.y =0 ;
+    
+    if(square.y >= canvas.height-50) speed *= -1;
+    else if (square.y == 0 ) speed *= -1;
+    square.y += speed;
+    
     requestAnimationFrame(moveDown);
     drawSquare();
 }
 
 
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowDown') {
+        moveDown();
+    }
+});
 
 
