@@ -25,19 +25,26 @@ let enemy = {
     }
 };
 
+let isSpacePressed = false;
+// ...
+
 let bullet = {
     x: ship.x + 25,
-    y: ship.y,
+    y: ship.y - 10, // Adjust the initial position (above the ship)
     width: 5,
     height: 5,
 
     DrawBullet: function(){
         ctx.fillStyle = 'yellow'; // Set bullet color
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        if(isSpacePressed) {this.y -= 10}
     }
 }
 
-let isSpacePressed = false; // Flag to track spacebar input
+// ...
+
+
+ // Flag to track spacebar input
 
 function InputHandler(event) {
     if (event.key === 'ArrowLeft') {
@@ -46,7 +53,7 @@ function InputHandler(event) {
     if (event.key === 'ArrowRight') {
         ship.x += 10;
     }
-    if (event.key === "Space") {
+    if (event.key === 'ArrowUp') {
         isSpacePressed = true; // Set the flag when spacebar is pressed
     }
 }
@@ -60,8 +67,9 @@ function animate() {
 
     if (isSpacePressed) {
         bullet.y -= 10; // Update bullet position if spacebar is pressed
+        console.log("bullet");
     }
-
+ 
     bullet.DrawBullet();
 
     // Update enemy position (for continuous animation)
