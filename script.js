@@ -36,6 +36,10 @@ class Enemy {
         ctx.fillStyle = "red";
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
+    Delete(){
+        ctx.clearRect(this.x, this.y, this.width , this.height);
+        console.log("bulletss deleted!");
+    }
 
 };
 
@@ -53,10 +57,22 @@ class Bullet {
     }
     Delete(){
         ctx.clearRect(this.x, this.y, this.size , this.size);
+        
     }
 };
 
 const bullets = [] ; // creating a an array for bullets
+const ememies = [] ; // creating an array for enemies
+
+var enemiesCount = 0 ;
+
+if(enemiesCount == 0)
+    {
+        var enemy = new Enemy((Math.random()* canvas.width) -25, 50 , 50 , 50); // creating an object of enemy
+        ememies.push(enemy);
+        enemiesCount++;
+        console.log(enemiesCount);
+    }
 
 
 
@@ -65,7 +81,6 @@ var player = new Player((canvas.width/2)-25, canvas.height - 100 ,50 ,50); // cr
 player.Draw();
 
 // creating an object of enemy
-var enemy = new Enemy((Math.random()* canvas.width) -25, 50 , 50 , 50); // creating an object of enemy
 enemy.Draw();
 
 function bulletFired(){
@@ -84,13 +99,31 @@ function renderBullets(){
     }
 }
 
-function checkCollision(bullet, enemy){
-    if(enemy.x <= bullet.x && bullet.x <=enemy.x + enemy.width && enemy.y >= bullet.y && bullet.y <= enemy.y + enemy.height)
-        {
-            console.log("Collision");
+function checkCollision(bullet, enemy) {
+    if (bullet && enemy) {
+        if (enemy.x <= bullet.x && bullet.x <= enemy.x + enemy.width &&
+            enemy.y >= bullet.y && bullet.y <= enemy.y + enemy.height) {
+            console.log("Collision detected!");
+            console.log("Enemy before deletion:", enemy);
             enemy.Delete();
             bullets.splice(bullets.indexOf(bullet), 1);
             console.log("Bullet deleted");
+            ememies.splice(ememies.indexOf(enemy), 1);
+            console.log("Enemy after deletion:", enemy);
+        }
+    }
+}
+
+
+
+
+
+
+function checkDeath()
+{
+    for(const bullet of bullets)
+        {
+            checkCollision(bullet, enemy);
         }
 }
 
@@ -113,10 +146,10 @@ function StartGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     player.Draw();
     enemy.Draw();
+    checkDeath();
     renderBullets();
-    checkCollision(bullets[bullets.length - 1], enemy);
     requestAnimationFrame(StartGame);
 }
 
-StartGame();
+requestAnimationFrame(StartGame);
 
