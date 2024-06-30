@@ -177,7 +177,7 @@ function EnemyFire() {
     }
 }
 
-function NextLevel() {
+function NextLevel() {  // level check 
     if (Score === 2) {
         console.log("Next Level!");
         createEnemy();
@@ -219,4 +219,4 @@ function StartGame() {
     requestAnimationFrame(StartGame);
 }
 
-requestAnimationFrame(StartGame);
+StartGame();
